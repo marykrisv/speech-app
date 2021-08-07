@@ -1,0 +1,19 @@
+1server:
+  port: 8083
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    hikari:
+      auto-commit: false
+    url: jdbc:postgresql://localhost:5432/speech_dev
+    tomcat:
+      initial-size: 5
+      max-wait: 10000
+      max-active: 10
+      max-idle: 5
+      min-idle: 5
+      default-auto-commit: true

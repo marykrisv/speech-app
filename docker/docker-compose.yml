@@ -1,0 +1,17 @@
+version: '3.2'
+
+services:
+  db:
+    image: postgres:11.6
+    container_name: speech-db
+    restart: unless-stopped
+    command: -c 'max_connections=200'
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "1"
