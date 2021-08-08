@@ -21,7 +21,7 @@ public class SpeechService {
     private final AuthorRepository authorRepository;
 
     public ResponseEntity getAllSpeeches(
-            String searchBy, String query, LocalDate from, LocalDate to
+            String searchBy, String query, LocalDate from, LocalDate to, Long authorId
     ) {
         List<Speech> speeches = null;
         ResponseEntity responseEntity;
@@ -36,6 +36,9 @@ public class SpeechService {
                     break;
                 case "date":
                     speeches = speechRepository.findAllByDateBetween(from, to);
+                    break;
+                case "author":
+                    speeches = speechRepository.findAllByAuthor(getAuthor(authorId));
                     break;
             }
         } else {
@@ -52,6 +55,16 @@ public class SpeechService {
                     .body(speeches);
         }
         return responseEntity;
+    }
+
+    private Author getAuthor(Long id) {
+        Optional<Author> optionalAuthor = authorRepository.findById(id);
+
+        if (optionalAuthor.isPresent()) {
+            return optionalAuthor.get();
+        } else {
+            return null;
+        }
     }
 
     public void addSpeech(CreateSpeechRequest createSpeechRequest) {

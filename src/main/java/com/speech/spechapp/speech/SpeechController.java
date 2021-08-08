@@ -1,7 +1,5 @@
 package com.speech.spechapp.speech;
 
-import com.speech.spechapp.speech.dto.Author;
-import com.speech.spechapp.speech.dto.Speech;
 import com.speech.spechapp.speech.dto.request.CreateSpeechRequest;
 import com.speech.spechapp.speech.dto.request.ShareSpeechRequest;
 import com.speech.spechapp.speech.dto.request.UpdateAuthorRequest;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/speeches")
@@ -27,9 +24,10 @@ public class SpeechController {
             @RequestParam(name = "searchBy", required = false) String searchBy,
             @RequestParam(name = "query", required = false) String query,
             @RequestParam(name = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-            @RequestParam(name = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+            @RequestParam(name = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+            @RequestParam(name = "authorId", required = false) Long authorId
     ) {
-        return speechService.getAllSpeeches(searchBy, query, from, to);
+        return speechService.getAllSpeeches(searchBy, query, from, to, authorId);
     }
 
     @GetMapping("/{id}/author")

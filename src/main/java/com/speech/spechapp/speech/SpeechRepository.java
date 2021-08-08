@@ -1,5 +1,6 @@
 package com.speech.spechapp.speech;
 
+import com.speech.spechapp.speech.dto.Author;
 import com.speech.spechapp.speech.dto.Speech;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -23,4 +24,6 @@ public interface SpeechRepository extends CrudRepository<Speech, Long> {
     List<Speech> searchByKeyWords(String query);
 
     List<Speech> findAllByDateBetween(LocalDate from, LocalDate to);
+
+    List<Speech> findAllByAuthor(Author author);
 }
