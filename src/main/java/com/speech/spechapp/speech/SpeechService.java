@@ -2,10 +2,7 @@ package com.speech.spechapp.speech;
 
 import com.speech.spechapp.speech.dto.Author;
 import com.speech.spechapp.speech.dto.Speech;
-import com.speech.spechapp.speech.dto.request.CreateSpeechRequest;
-import com.speech.spechapp.speech.dto.request.ShareSpeechRequest;
-import com.speech.spechapp.speech.dto.request.UpdateAuthorRequest;
-import com.speech.spechapp.speech.dto.request.UpdateSpeechRequest;
+import com.speech.spechapp.speech.dto.request.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +45,12 @@ public class SpeechService {
     }
 
     public void addSpeech(CreateSpeechRequest createSpeechRequest) {
-        Author author = createSpeechRequest.getAuthor();
+        CreateAuthorRequest createAuthorRequest = createSpeechRequest.getCreateAuthorRequest();
+
+        Author author = Author.builder()
+                .firstName(createAuthorRequest.getFirstName())
+                .lastName(createAuthorRequest.getLastName())
+                .email(createAuthorRequest.getEmail()).build();
 
         authorRepository.save(author);
 

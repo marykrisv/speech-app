@@ -1,6 +1,5 @@
 package com.speech.spechapp.speech.dto.request;
 
-import com.speech.spechapp.speech.dto.Author;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -9,6 +8,6 @@ import java.time.LocalDate;
 public class CreateSpeechRequest {
     private String text;
     private String subject;
-    private Author author;
+    private CreateAuthorRequest createAuthorRequest;
     private LocalDate date;
 }
