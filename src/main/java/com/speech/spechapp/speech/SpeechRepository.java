@@ -14,12 +14,12 @@ public interface SpeechRepository extends CrudRepository<Speech, Long> {
     List<Speech> findAll();
 
     @Query(value = "SELECT * FROM speeches sp " +
-            "WHERE sp.text LIKE %?1%"
+            "WHERE sp.text ILIKE %?1%"
             , nativeQuery = true)
     List<Speech> searchByText(String query);
 
     @Query(value = "SELECT * FROM speeches sp " +
-            "WHERE sp.key_words LIKE %?1%"
+            "WHERE sp.subject ILIKE %?1%"
             , nativeQuery = true)
     List<Speech> searchByKeyWords(String query);
 

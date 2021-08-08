@@ -31,7 +31,7 @@ public class SpeechService {
                 case "text":
                     speeches = speechRepository.searchByText(query);
                     break;
-                case "key_words":
+                case "subject":
                     speeches = speechRepository.searchByKeyWords(query);
                     break;
                 case "date":
