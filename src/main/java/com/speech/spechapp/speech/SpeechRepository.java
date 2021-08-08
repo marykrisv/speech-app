@@ -4,7 +4,7 @@ import com.speech.spechapp.speech.dto.Speech;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface SpeechRepository extends CrudRepository<Speech, Long> {
@@ -22,5 +22,5 @@ public interface SpeechRepository extends CrudRepository<Speech, Long> {
             , nativeQuery = true)
     List<Speech> searchByKeyWords(String query);
 
-    List<Speech> findAllByDateBetween(LocalDateTime from, LocalDateTime to);
+    List<Speech> findAllByDateBetween(LocalDate from, LocalDate to);
 }

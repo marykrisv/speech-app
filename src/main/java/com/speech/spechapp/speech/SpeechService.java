@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +21,7 @@ public class SpeechService {
     private final AuthorRepository authorRepository;
 
     public List<Speech> getAllSpeeches(
-            String searchBy, String query, LocalDateTime from, LocalDateTime to
+            String searchBy, String query, LocalDate from, LocalDate to
     ) {
         List<Speech> speeches = null;
 
@@ -34,7 +34,7 @@ public class SpeechService {
                     speeches = speechRepository.searchByKeyWords(query);
                     break;
                 case "date":
-                    speeches = speechRepository.searchByKeyWords(query);
+                    speeches = speechRepository.findAllByDateBetween(from, to);
                     break;
             }
         } else {
@@ -51,8 +51,9 @@ public class SpeechService {
 
         speechRepository.save(Speech.builder()
                 .text(createSpeechRequest.getText())
-                .subject(createSpeechRequest.getKeyWords())
+                .subject(createSpeechRequest.getSubject())
                 .author(author)
+                .date(createSpeechRequest.getDate())
                 .build());
     }
 
@@ -71,7 +72,8 @@ public class SpeechService {
             Speech speech = optionalSpeech.get();
 
             speech.setText(updateSpeechRequest.getText());
-            speech.setSubject(updateSpeechRequest.getKeyWords());
+            speech.setSubject(updateSpeechRequest.getSubject());
+            speech.setDate(updateSpeechRequest.getDate());
 
             speechRepository.save(speech);
 

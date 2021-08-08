@@ -2,11 +2,11 @@ package com.speech.spechapp.speech.dto.request;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public class UpdateSpeechRequest {
     private String text;
-    private String keyWords;
-    private LocalDateTime date;
+    private String subject;
+    private LocalDate date;
 }

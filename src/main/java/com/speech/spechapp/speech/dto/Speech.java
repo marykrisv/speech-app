@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -29,6 +29,6 @@ public class Speech {
     @Column(name = "subject", nullable = false)
     private String subject;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
 }

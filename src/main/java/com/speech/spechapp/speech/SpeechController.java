@@ -6,11 +6,12 @@ import com.speech.spechapp.speech.dto.request.CreateSpeechRequest;
 import com.speech.spechapp.speech.dto.request.UpdateAuthorRequest;
 import com.speech.spechapp.speech.dto.request.UpdateSpeechRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,8 +25,8 @@ public class SpeechController {
     public List<Speech> getAllSpeeches(
             @RequestParam(name = "searchBy", required = false) String searchBy,
             @RequestParam(name = "query", required = false) String query,
-            @RequestParam(name = "from", required = false) LocalDateTime from,
-            @RequestParam(name = "to", required = false) LocalDateTime to
+            @RequestParam(name = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(name = "to", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
     ) {
         return speechService.getAllSpeeches(searchBy, query, from, to);
     }
