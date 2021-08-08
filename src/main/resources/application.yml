@@ -9,7 +9,9 @@ spring:
   datasource:
     hikari:
       auto-commit: false
-    url: jdbc:postgresql://localhost:5432/speech_dev
+    url: jdbc:postgresql://database-1.cfsxy9eyo0nn.us-east-2.rds.amazonaws.com:5432/speech_dev
+    username: postgres
+    password: admin123
     tomcat:
       initial-size: 5
       max-wait: 10000
