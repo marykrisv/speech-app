@@ -20,10 +20,11 @@ public class SpeechService {
     private final SpeechRepository speechRepository;
     private final AuthorRepository authorRepository;
 
-    public List<Speech> getAllSpeeches(
+    public ResponseEntity getAllSpeeches(
             String searchBy, String query, LocalDate from, LocalDate to
     ) {
         List<Speech> speeches = null;
+        ResponseEntity responseEntity;
 
         if (searchBy != null) {
             switch (searchBy) {
@@ -41,7 +42,16 @@ public class SpeechService {
             speeches = speechRepository.findAll();
         }
 
-        return speeches;
+        if (speeches.isEmpty()) {
+            responseEntity = ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Empty List!");
+        } else {
+            responseEntity = ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(speeches);
+        }
+        return responseEntity;
     }
 
     public void addSpeech(CreateSpeechRequest createSpeechRequest) {
@@ -62,12 +72,38 @@ public class SpeechService {
                 .build());
     }
 
-    public Speech getSpeech(Long id) {
-        return speechRepository.findById(id).get();
+    public ResponseEntity getSpeech(Long id) {
+        Optional<Speech> optionalSpeech = speechRepository.findById(id);
+        ResponseEntity responseEntity;
+
+        if (optionalSpeech.isPresent()) {
+            responseEntity = ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(optionalSpeech.get());
+        } else {
+            responseEntity = ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("No speech found!");
+        }
+
+        return responseEntity;
     }
 
-    public Author getSpeechAuthor(Long id) {
-        return speechRepository.findById(id).get().getAuthor();
+    public ResponseEntity getSpeechAuthor(Long id) {
+        Optional<Speech> optionalSpeech = speechRepository.findById(id);
+        ResponseEntity responseEntity;
+
+        if (optionalSpeech.isPresent()) {
+            responseEntity = ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(optionalSpeech.get().getAuthor());
+        } else {
+            responseEntity = ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("No speech found!");
+        }
+
+        return responseEntity;
     }
 
     public HttpStatus updateSpeech(Long id, UpdateSpeechRequest updateSpeechRequest) {
