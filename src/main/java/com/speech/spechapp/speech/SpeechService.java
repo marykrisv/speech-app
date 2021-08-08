@@ -3,15 +3,18 @@ package com.speech.spechapp.speech;
 import com.speech.spechapp.speech.dto.Author;
 import com.speech.spechapp.speech.dto.Speech;
 import com.speech.spechapp.speech.dto.request.CreateSpeechRequest;
+import com.speech.spechapp.speech.dto.request.ShareSpeechRequest;
 import com.speech.spechapp.speech.dto.request.UpdateAuthorRequest;
 import com.speech.spechapp.speech.dto.request.UpdateSpeechRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -79,7 +82,7 @@ public class SpeechService {
 
             return HttpStatus.OK;
         } else {
-            return HttpStatus.NO_CONTENT;
+            return HttpStatus.NOT_MODIFIED;
         }
     }
 
@@ -97,7 +100,7 @@ public class SpeechService {
 
             return HttpStatus.OK;
         } else {
-            return HttpStatus.NO_CONTENT;
+            return HttpStatus.NOT_MODIFIED;
         }
     }
 
@@ -109,7 +112,31 @@ public class SpeechService {
 
             return HttpStatus.OK;
         } else {
-            return HttpStatus.NO_CONTENT;
+            return HttpStatus.NOT_MODIFIED;
         }
+    }
+
+    public ResponseEntity shareSpeech(ShareSpeechRequest shareSpeechRequest) {
+        List<Speech> speeches = (List<Speech>) speechRepository.findAllById(shareSpeechRequest.getSpeechIds());
+
+        ResponseEntity responseEntity;
+
+        if (speeches.isEmpty()) {
+            responseEntity = ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(String.format("Speeches not found and was not sent to %s", shareSpeechRequest.getEmail()));
+        } else {
+            responseEntity = ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(String.format("Speeches (%s) was sent to %s",
+                            getSpeechesSubject(speeches),
+                            shareSpeechRequest.getEmail()));
+        }
+
+        return responseEntity;
+    }
+
+    private String getSpeechesSubject(List<Speech> speeches) {
+        return speeches.stream().map(Speech::getSubject).collect(Collectors.joining(", "));
     }
 }

@@ -3,6 +3,7 @@ package com.speech.spechapp.speech;
 import com.speech.spechapp.speech.dto.Author;
 import com.speech.spechapp.speech.dto.Speech;
 import com.speech.spechapp.speech.dto.request.CreateSpeechRequest;
+import com.speech.spechapp.speech.dto.request.ShareSpeechRequest;
 import com.speech.spechapp.speech.dto.request.UpdateAuthorRequest;
 import com.speech.spechapp.speech.dto.request.UpdateSpeechRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/speeches")
+@RequestMapping("/api/speeches")
 @RequiredArgsConstructor
 public class SpeechController {
 
@@ -66,5 +67,10 @@ public class SpeechController {
     @DeleteMapping("/{id}")
     public ResponseEntity deleteSpeech(@PathVariable Long id) {
         return ResponseEntity.status(speechService.deleteSpeech(id)).build();
+    }
+
+    @PostMapping("/share")
+    public ResponseEntity shareSpeech(@RequestBody ShareSpeechRequest shareSpeechRequest) {
+        return speechService.shareSpeech(shareSpeechRequest);
     }
 }
