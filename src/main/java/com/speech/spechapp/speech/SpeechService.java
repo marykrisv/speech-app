@@ -1,5 +1,6 @@
 package com.speech.spechapp.speech;
 
+import com.speech.spechapp.email.EmailService;
 import com.speech.spechapp.speech.dto.Author;
 import com.speech.spechapp.speech.dto.Speech;
 import com.speech.spechapp.speech.dto.request.*;
@@ -19,6 +20,7 @@ public class SpeechService {
 
     private final SpeechRepository speechRepository;
     private final AuthorRepository authorRepository;
+    private final EmailService emailService;
 
     public ResponseEntity getAllSpeeches(
             String searchBy, String query, LocalDate from, LocalDate to, Long authorId
@@ -177,6 +179,8 @@ public class SpeechService {
                     .status(HttpStatus.NOT_FOUND)
                     .body(String.format("Speeches not found and was not sent to %s", shareSpeechRequest.getEmail()));
         } else {
+            emailService.sendEmail(shareSpeechRequest.getEmail(), createEmailBody(speeches));
+
             responseEntity = ResponseEntity
                     .status(HttpStatus.OK)
                     .body(String.format("Speeches (%s) was sent to %s",
@@ -185,6 +189,19 @@ public class SpeechService {
         }
 
         return responseEntity;
+    }
+
+    private String createEmailBody(List<Speech> speeches) {
+        String emailBody = "";
+
+        for (Speech speech : speeches) {
+            emailBody = emailBody.concat(String.format("Subject: %s \n", speech.getSubject()));
+            emailBody = emailBody.concat(String.format("Author: %s %s \n", speech.getAuthor().getFirstName(), speech.getAuthor().getLastName()));
+            emailBody = emailBody.concat(String.format("Speech Date: %s \n", speech.getDate()));
+            emailBody = emailBody.concat(String.format("Speech Text: %s \n\n", speech.getText()));
+        }
+
+        return emailBody;
     }
 
     private String getSpeechesSubject(List<Speech> speeches) {

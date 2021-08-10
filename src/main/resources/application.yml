@@ -19,3 +19,7 @@ spring:
       max-idle: 5
       min-idle: 5
       default-auto-commit: true
+  mail:
+    protocol: smtp
+    host: localhost
+    port: 1025

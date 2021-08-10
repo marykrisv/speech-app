@@ -15,3 +15,10 @@ services:
       options:
         max-size: "50m"
         max-file: "1"
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    restart: unless-stopped
+    ports:
+      - 8025:8025
+      - 1025:1025
